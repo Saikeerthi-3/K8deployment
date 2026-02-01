@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DesignSphere Global</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: #faf7f4;
+            color: #333;
+        }
+
+        /* ---------- NAVBAR ---------- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        nav a.active {
+            background: #e7d3bd;
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
+
+        .profile {
+            background: #f1ece6;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        /* ---------- HERO ---------- */
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            color: #6b4f3f;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 20px auto;
+            color: #666;
+        }
+
+        /* ---------- STATS ---------- */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 40px;
+        }
+
+        .stat h2 {
+            color: #c08a64;
+            margin: 0;
+        }
+
+        .stat p {
+            margin: 5px 0 0;
+            font-size: 14px;
+        }
+
+        /* ---------- SECTIONS ---------- */
+        section {
+            padding: 50px 40px;
+        }
+
+        section h2 {
+            margin-bottom: 20px;
+            color: #6b4f3f;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .rating {
+            color: #e0a96d;
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #fff;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">DesignSphere Global</div>
+    <nav>
+        <a class="active">Home</a>
+        <a>Categories</a>
+        <a>Ratings</a>
+        <a>Community</a>
+        <a>Gallery</a>
+    </nav>
+    <div class="profile">
+        Jane<br>
+        <small>Designer · Premium</small>
+    </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+    <h1>Design Your Dream Space,<br>Share With The World</h1>
+    <p>
+        Discover interior design inspiration from around the globe.
+        Connect with designers, rate designs, and explore cultural aesthetics.
+    </p>
+
+    <div class="stats">
+        <div class="stat">
+            <h2>150K+</h2>
+            <p>Designs</p>
+        </div>
+        <div class="stat">
+            <h2>85+</h2>
+            <p>Countries</p>
+        </div>
+        <div class="stat">
+            <h2>42K+</h2>
+            <p>Designers</p>
+        </div>
+        <div class="stat">
+            <h2>4.8</h2>
+            <p>Avg Rating</p>
+        </div>
+    </div>
+</div>
+
+<!-- CATEGORIES -->
+<section>
+    <h2>Categories</h2>
+    <div class="grid" id="categories"></div>
+</section>
+
+<!-- DESIGNERS -->
+<section>
+    <h2>Top Designers</h2>
+    <div class="grid" id="designers"></div>
+</section>
+
+<!-- GALLERY -->
+<section>
+    <h2>Popular Designs</h2>
+    <div class="grid" id="gallery"></div>
+</section>
+
+<footer>
+    © 2026 DesignSphere Global
+</footer>
+
+<script>
+/* 🔹 ADD YOUR LOAD BALANCER DNS HERE */
+const API_BASE_URL = "FlowLoadBalancer-1592999094.ap-southeast-2.elb.amazonaws.com";
+
+/* ---- SAMPLE DATA (Replace with API later) ---- */
+const categories = [
+    { name: "Bedroom", desc: "Comfortable and stylish bedroom interiors" },
+    { name: "Living Room", desc: "Elegant living spaces for families" },
+    { name: "Kitchen", desc: "Modern and functional kitchen designs" }
+];
+
+const designers = [
+    { name: "Jane Cooper", rating: 4.9, skill: "Luxury Interiors" },
+    { name: "Arjun Rao", rating: 4.7, skill: "Modern Homes" },
+    { name: "Emily Stone", rating: 4.8, skill: "Minimal Design" }
+];
+
+const designs = [
+    { title: "Modern Bedroom", category: "Bedroom" },
+    { title: "Luxury Living Room", category: "Living Room" },
+    { title: "Modular Kitchen", category: "Kitchen" }
+];
+
+/* ---- RENDER FUNCTIONS ---- */
+function renderCategories() {
+    const el = document.getElementById("categories");
+    categories.forEach(c => {
+        el.innerHTML += `
+            <div class="card">
+                <h3>${c.name}</h3>
+                <p>${c.desc}</p>
+            </div>
+        `;
+    });
+}
+
+function renderDesigners() {
+    const el = document.getElementById("designers");
+    designers.forEach(d => {
+        el.innerHTML += `
+            <div class="card">
+                <h3>${d.name}</h3>
+                <p class="rating">⭐ ${d.rating}</p>
+                <p>${d.skill}</p>
+            </div>
+        `;
+    });
+}
+
+function renderGallery() {
+    const el = document.getElementById("gallery");
+    designs.forEach(g => {
+        el.innerHTML += `
+            <div class="card">
+                <h3>${g.title}</h3>
+                <p>${g.category}</p>
+            </div>
+        `;
+    });
+}
+
+/* ---- LOAD PAGE ---- */
+document.addEventListener("DOMContentLoaded", () => {
+    renderCategories();
+    renderDesigners();
+    renderGallery();
+});
+</script>
+
+</body>
+</html>
