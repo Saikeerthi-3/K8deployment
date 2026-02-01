@@ -7,21 +7,9 @@ pipeline {
 
   stages {
 
-    stage('Clone GitHub Repo') {
+    stage('Clone Repo') {
       steps {
         git 'https://github.com/Saikeerthi-3/K8deployment.git'
-      }
-    }
-
-    stage('Create Dockerfile') {
-      steps {
-        sh '''
-        cat <<EOF > Dockerfile
-        FROM nginx:alpine
-        COPY web.html /usr/share/nginx/html/index.html
-        EXPOSE 80
-        EOF
-        '''
       }
     }
 
@@ -48,11 +36,9 @@ pipeline {
 
     stage('Deploy to Kubernetes') {
       steps {
-        sh '''
-        kubectl apply -f deployment.yaml
-        kubectl apply -f service.yaml
-        kubectl apply -f ingress.yaml
-        '''
+        sh 'kubectl apply -f k8s/deployment.yaml'
+        sh 'kubectl apply -f k8s/service.yaml'
+        sh 'kubectl apply -f k8s/ingress.yaml'
       }
     }
   }
