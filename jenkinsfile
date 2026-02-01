@@ -1,0 +1,58 @@
+pipeline {
+  agent any
+
+  environment {
+    IMAGE = "saikeerthi1610/html-app"
+  }
+
+  stages {
+
+    stage('Clone GitHub Repo') {
+      steps {
+        git 'https://github.com/Saikeerthi-3/K8deployment.git'
+      }
+    }
+
+    stage('Create Dockerfile') {
+      steps {
+        sh '''
+        cat <<EOF > Dockerfile
+        FROM nginx:alpine
+        COPY web.html /usr/share/nginx/html/index.html
+        EXPOSE 80
+        EOF
+        '''
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+        sh 'docker build -t $IMAGE:latest .'
+      }
+    }
+
+    stage('Push to Docker Hub') {
+      steps {
+        withCredentials([usernamePassword(
+          credentialsId: 'dockerhub-creds',
+          usernameVariable: 'USER',
+          passwordVariable: 'PASS'
+        )]) {
+          sh '''
+          echo $PASS | docker login -u $USER --password-stdin
+          docker push $IMAGE:latest
+          '''
+        }
+      }
+    }
+
+    stage('Deploy to Kubernetes') {
+      steps {
+        sh '''
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
+        '''
+      }
+    }
+  }
+}
